@@ -3,8 +3,7 @@ import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
 import ChartComponent from '../chart';
 import Clock from '../clock';
-import { useTheme } from '../../context/themeContext'; // Make sure this path is correct
-
+import { useTheme } from '../../context/themeContext'; 
 const Home = () => {
     const { theme } = useTheme();
     const GET_DASHBOARD_DATA = gql`

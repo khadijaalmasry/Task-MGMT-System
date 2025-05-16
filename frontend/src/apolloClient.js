@@ -1,9 +1,12 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, split } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:5001/graphql',
-  credentials: 'include' // This is crucial for cookies/sessions
+  credentials: 'include'
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -16,15 +19,45 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+// WebSocket link using graphql-ws
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:5001/graphql',
+    connectionParams: () => {
+      const token = localStorage.getItem('token');
+      return {
+        authorization: token ? `Bearer ${token}` : "",
+      };
+    },
+    connectionAckWaitTimeout: 10000, // Increase timeout
+    shouldRetry: () => true,
+    retryAttempts: Infinity,
+    // Add WebSocket-specific options
+    webSocketImpl: WebSocket,
+    lazy: true, // Only connect when first subscription is created
+    keepAlive: 10000, // Send ping every 10 seconds
+  })
+);
+
+// Split links based on operation type
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  authLink.concat(httpLink)
+);
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: splitLink,
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: 'network-only',
-    },
-    query: {
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'cache-and-network',
     },
   }
 });

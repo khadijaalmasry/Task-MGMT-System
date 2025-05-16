@@ -57,8 +57,6 @@ export const AuthProvider = ({ children }) => {
   // Verify token on initial load
   useEffect(() => {
     if (token && !user) {
-      // You might want to verify the token here
-      // or fetch user data from the server
       verifyUser();
     }
   }, [token, user]);

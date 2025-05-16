@@ -17,7 +17,6 @@ async function startApolloServer(app) {
 
   await server.start();
   
-  // ✅ Correct CORS settings here:
   server.applyMiddleware({ 
     app,
     path: '/graphql',
@@ -32,7 +31,7 @@ async function startApolloServer(app) {
     }
   });
 
-  console.log(`🚀 GraphQL server ready at ${server.graphqlPath}`);
+  console.log(`GraphQL server ready at ${server.graphqlPath}`);
 }
 
 module.exports = startApolloServer;

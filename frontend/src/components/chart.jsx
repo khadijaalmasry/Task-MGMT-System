@@ -9,7 +9,6 @@ import {
   Legend
 } from 'chart.js';
 
-// Register necessary components
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function ChartComponent({ data }) {
@@ -62,7 +61,7 @@ function ChartComponent({ data }) {
       }
     });
 
-    // Optional: clean up on unmount
+    // Cleanup function to destroy the chart instance
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();

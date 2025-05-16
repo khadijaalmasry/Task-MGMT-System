@@ -1,6 +1,5 @@
 import React from 'react';
-import { useTheme } from '../context/themeContext'; // Make sure this path matches your project structure
-
+import { useTheme } from '../context/themeContext'; 
 const Sidebar = ({ onTabClick, isAdmin }) => {
   const { theme } = useTheme();
   const tabs = isAdmin

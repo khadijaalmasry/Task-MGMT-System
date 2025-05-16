@@ -23,6 +23,7 @@
     "graphql": "^16.11.0",
     "graphql-depth-limit": "^1.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.14.2"
+    "mongoose": "^8.14.2",
+    "ws": "^8.18.2"
   }
 }

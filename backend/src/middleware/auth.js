@@ -5,7 +5,7 @@ const authMiddleware = (context) => {
   const authHeader = context.req.headers['authorization'];
   if (!authHeader) throw new Error('Authentication required');
   
-  // Typically token comes as "Bearer <token>"
+  // Token comes as "Bearer <token>"
   const token = authHeader.split(' ')[1];
   
   try {

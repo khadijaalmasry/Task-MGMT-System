@@ -1,4 +1,5 @@
-// Define Student object
+// This file was used to fetch/store data from localStorage 
+// before the GraphQL API was implemented.
 class Student {
   constructor(id, name, password, isAdmin = false) {
     this.id = id;
@@ -8,7 +9,6 @@ class Student {
   }
 }
 
-// Define Project object
 class Project {
   constructor(id, title, description, students, category, startDate, endDate, status, progress) {
     this.id = id;
@@ -23,7 +23,6 @@ class Project {
   }
 }
 
-// Define Task object
 class Task {
   constructor(id, project, name, description, assignedStudent, status, dueDate) {
     this.id = id;
@@ -36,7 +35,7 @@ class Task {
   }
 }
 
-// ✅ Define Message object
+
 class Message {
   constructor(sender, text, timestamp = new Date().toISOString()) {
     this.sender = sender;
@@ -45,7 +44,6 @@ class Message {
   }
 }
 
-// Create sample students
 const students = [
   new Student(1, 'John Doe', 'password123', true),
   new Student(2, 'Jane Smith', 'password123'),
@@ -55,8 +53,6 @@ const students = [
 ];
 
 
-
-// Sample projects
 const projects = [
   new Project(1, 'Alpha Software', 'Development of a new software application.', [students[0], students[1]], 'Software Development', '2025-01-01', '2025-12-31', 'inprogress', 30),
   new Project(2, 'Beta Software', 'Upgrade and maintenance of existing software.', [students[1], students[2]], 'Software Maintenance', '2025-02-01', '2025-11-30', 'Pending', 0),
@@ -65,7 +61,7 @@ const projects = [
   new Project(5, 'Epsilon Software', 'Research and development of new software technologies.', [students[0], students[4]], 'Software Research', '2025-05-01', '2025-08-31', 'inprogress', 0)
 ];
 
-// Sample tasks
+
 const tasks = [
   new Task(1, projects[0], 'Initial Planning', 'Plan the initial stages of the software development.', students[0], 'Not Started', '2025-03-01'),
   new Task(2, projects[1], 'Code Review', 'Review the existing codebase.', students[1], 'In Progress', '2025-04-01'),

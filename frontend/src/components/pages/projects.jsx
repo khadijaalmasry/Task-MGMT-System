@@ -341,9 +341,7 @@ const ProjectsPage = () => {
           ))
         )}
       </div>
-
-      {/* Keep your modals exactly the same - they should handle their own theming */}
-      <AddProjectModal
+ <AddProjectModal
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleNewProjectSubmit}

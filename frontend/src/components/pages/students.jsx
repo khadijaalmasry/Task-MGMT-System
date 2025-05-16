@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useTheme } from "../../context/themeContext";
+import ResetPasswordModal from "../modals/ResetPasswordModal";
+import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
 
 const GET_STUDENTS = gql`
   query GetStudents {
@@ -32,6 +34,8 @@ const StudentsPage = () => {
   const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [newPassword, setNewPassword] = useState("");
 
@@ -73,15 +77,28 @@ const StudentsPage = () => {
     }
   };
 
-  const handleDeleteStudent = async (studentId) => {
+  const handleDeleteClick = (student) => {
+    setStudentToDelete(student);
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDeleteStudent = async () => {
     try {
       await deleteStudent({
-        variables: { id: studentId }
+        variables: { id: studentToDelete._id }
       });
       await refetchStudents();
     } catch (error) {
       console.error("Error deleting student:", error);
+    } finally {
+      setShowDeleteConfirmation(false);
+      setStudentToDelete(null);
     }
+  };
+
+  const cancelDeleteStudent = () => {
+    setShowDeleteConfirmation(false);
+    setStudentToDelete(null);
   };
 
   if (studentsLoading) {
@@ -156,7 +173,7 @@ const StudentsPage = () => {
                     Reset Password
                   </button>
                   <button
-                    onClick={() => handleDeleteStudent(student._id)}
+                    onClick={() => handleDeleteClick(student)}
                     className={`px-3 py-1 text-sm rounded
                       ${theme === 'dark' 
                         ? 'bg-red-600 hover:bg-red-700' 
@@ -171,53 +188,25 @@ const StudentsPage = () => {
         </div>
       </div>
 
-      {/* Password Reset Modal */}
-      {isResettingPassword && (
-        <div className={`fixed inset-0 flex items-center justify-center z-50 
-          ${theme === 'dark' ? 'bg-black bg-opacity-70' : 'bg-gray-500 bg-opacity-50'}`}>
-          <div className={`p-6 rounded-lg shadow-lg w-96
-            ${theme === 'dark' ? 'bg-card-dark' : 'bg-card-light'}`}>
-            <h3 className={`text-lg font-semibold mb-4
-              ${theme === 'dark' ? 'text-primary-dark' : 'text-primary-light'}`}>
-              Reset Password for {selectedStudent?.name}
-            </h3>
-            <input
-              type="password"
-              placeholder="New password"
-              className={`w-full p-2 mb-4 border rounded
-                ${theme === 'dark' 
-                  ? 'border-[#919191] bg-card-dark text-text-dark' 
-                  : 'border-gray-300 bg-card-light text-text-light'}`}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => {
-                  setIsResettingPassword(false);
-                  setSelectedStudent(null);
-                  setNewPassword("");
-                }}
-                className={`px-4 py-2 rounded
-                  ${theme === 'dark' 
-                    ? 'bg-gray-600 hover:bg-gray-700' 
-                    : 'bg-gray-300 hover:bg-gray-400'}`}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleResetPassword}
-                className={`px-4 py-2 rounded text-white
-                  ${theme === 'dark' 
-                    ? 'bg-blue-600 hover:bg-blue-700' 
-                    : 'bg-blue-500 hover:bg-blue-600'}`}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ResetPasswordModal
+        visible={isResettingPassword}
+        onClose={() => {
+          setIsResettingPassword(false);
+          setSelectedStudent(null);
+          setNewPassword("");
+        }}
+        onSubmit={handleResetPassword}
+        student={selectedStudent}
+        newPassword={newPassword}
+        setNewPassword={setNewPassword}
+      />
+
+      <DeleteConfirmationModal
+        visible={showDeleteConfirmation}
+        onCancel={cancelDeleteStudent}
+        onConfirm={confirmDeleteStudent}
+        student={studentToDelete}
+      />
     </div>
   );
 };

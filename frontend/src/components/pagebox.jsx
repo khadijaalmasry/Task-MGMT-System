@@ -6,7 +6,7 @@ import Tasks from './pages/tasks';
 import Chat from './pages/chat';
 import Students from './pages/students';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/themeContext'; // Import theme hook
+import { useTheme } from '../context/themeContext';
 
 const PageBox = ({ currentPage, onOpenProjectForm, onOpenTaskForm }) => {
   const { theme } = useTheme(); // Get current theme
@@ -20,18 +20,18 @@ const PageBox = ({ currentPage, onOpenProjectForm, onOpenTaskForm }) => {
     home: isAdmin,       // Only admins can access home
     projects: isAdmin,   // Only admins can access projects
     tasks: true,         // All authenticated users can access tasks
-    chat: true,           // All authenticated users can access chat
-    students: isAdmin
+    chat: true,          // All authenticated users can access chat
+    students: isAdmin    // Only admins can access students
   };
 
-  // Check if current page is allowed and redirect if not
+  // Check if current page is allowed, redirect if not
   useEffect(() => {
     if (!isAdmin && (currentPage === 'home' || currentPage === 'projects'|| currentPage === 'students')) {
       navigate('/tasks'); // Redirect to tasks page
     }
   }, [currentPage, isAdmin, navigate]);
 
-  // Define component-specific props
+  // Component-specific props
   const pageComponents = {
     home: <Home />,
     projects: <Projects onAddProject={onOpenProjectForm} />,

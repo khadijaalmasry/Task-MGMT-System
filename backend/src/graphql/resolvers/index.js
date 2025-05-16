@@ -79,7 +79,7 @@ const resolvers = {
   },
 
   Mutation: {
-// Updated signUp mutation
+
 signUp: async (_, { name, password, isAdmin, universityId }) => {
   const existingUser = await Student.findOne({ name });
   if (existingUser) {
@@ -107,7 +107,7 @@ signUp: async (_, { name, password, isAdmin, universityId }) => {
   return { token, user };
 },
 
-// Updated signIn mutation
+
 signIn: async (_, { name, password }) => {
   try {
     const user = await Student.findOne({ name });
@@ -134,7 +134,7 @@ signIn: async (_, { name, password }) => {
   }
 },
 
-// Updated updateStudent mutation
+
 updateStudent: async (_, { id, name, password, isAdmin, universityID }, context) => {
   authMiddleware(context);
   
@@ -162,7 +162,7 @@ updateStudent: async (_, { id, name, password, isAdmin, universityID }, context)
       return deletedStudent ? true : false;
     },
 
-    // Project Mutations
+  
     createProject: async (_, { title, description, category, studentIds, startDate, endDate }, context) => {
       authMiddleware(context);
       const newProject = new Project({
@@ -218,7 +218,7 @@ updateStudent: async (_, { id, name, password, isAdmin, universityID }, context)
       return deletedProject ? true : false;
     },
 
-    // Task Mutations
+    
     createTask: async (_, { name, description, projectId, assignedStudentId, status, dueDate }, context) => {
       authMiddleware(context);
       if (!dueDate) throw new Error('Due date is required');

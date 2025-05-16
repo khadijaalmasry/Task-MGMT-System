@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "create-vite": "^6.4.1"
+    "cookie-parser": "^1.4.7",
+    "create-vite": "^6.4.1",
+    "graphql-subscriptions": "^3.0.0",
+    "graphql-ws": "^5.5.5",
+    "subscriptions-transport-ws": "^0.11.0",
+    "ws": "^8.18.2"
   }
 }

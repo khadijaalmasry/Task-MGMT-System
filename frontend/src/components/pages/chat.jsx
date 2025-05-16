@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import { gql } from '@apollo/client';
-import { useTheme } from '../../context/themeContext'; // Make sure path is correct
+import { useTheme } from '../../context/themeContext';
 
 const GET_STUDENTS = gql`
   query GetStudents {
@@ -50,7 +50,7 @@ const CREATE_MESSAGE = gql`
 `;
 
 const ChatPage = ({ username, isAdmin }) => {
-  const { theme } = useTheme(); // Get current theme
+  const { theme } = useTheme();
   const [currentUser, setCurrentUser] = useState(null);
   const [students, setStudents] = useState([]);
   const [currentChatUser, setCurrentChatUser] = useState(null);
@@ -62,7 +62,6 @@ const ChatPage = ({ username, isAdmin }) => {
   const [fetchMessages, { data: messagesData }] = useLazyQuery(GET_MESSAGES);
   const [sendMessageMutation] = useMutation(CREATE_MESSAGE);
 
-  // Auto-scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -73,30 +72,29 @@ const ChatPage = ({ username, isAdmin }) => {
     }
   };
 
-  // Initialize current user and students list
   useEffect(() => {
     if (studentsData && studentsData.students) {
       const allStudents = studentsData.students;
       const user = allStudents.find(s => s.name === username);
       setCurrentUser(user);
 
-      // Filter students based on admin status
       let filteredStudents;
       if (user.isAdmin) {
         filteredStudents = allStudents.filter(s => s._id !== user._id);
       } else {
         filteredStudents = allStudents.filter(s => s.isAdmin && s._id !== user._id);
       }
-      
+
       setStudents(filteredStudents);
 
       if (filteredStudents.length > 0) {
-        setCurrentChatUser(filteredStudents[0]);
+        const lastChatId = localStorage.getItem('lastChatUserId');
+        const foundChatUser = filteredStudents.find(s => s._id === lastChatId);
+        setCurrentChatUser(foundChatUser || filteredStudents[0]);
       }
     }
   }, [studentsData, username, isAdmin]);
 
-  // Fetch messages when current chat user changes
   useEffect(() => {
     if (currentUser && currentChatUser) {
       fetchMessages({
@@ -108,12 +106,32 @@ const ChatPage = ({ username, isAdmin }) => {
     }
   }, [currentUser, currentChatUser, fetchMessages]);
 
-  // Update messages when new data arrives
   useEffect(() => {
     if (messagesData && messagesData.messagesBetweenUsers) {
       setMessages(messagesData.messagesBetweenUsers);
     }
   }, [messagesData]);
+
+  useEffect(() => {
+  let pollingInterval;
+
+  if (currentUser && currentChatUser) {
+    pollingInterval = setInterval(() => {
+      const chatVisible = document.getElementById('chat-messages') !== null;
+
+      if (chatVisible) {
+        fetchMessages({
+          variables: {
+            senderId: currentUser._id,
+            recipientId: currentChatUser._id,
+          },
+        });
+      }
+    }, 3000);
+  }
+
+  return () => clearInterval(pollingInterval);
+}, [currentUser, currentChatUser, fetchMessages]);
 
   const handleSendMessage = async () => {
     if (!messageText.trim() || !currentUser || !currentChatUser) return;
@@ -128,7 +146,7 @@ const ChatPage = ({ username, isAdmin }) => {
       });
 
       if (data && data.createMessage) {
-        setMessages(prevMessages => [...prevMessages, data.createMessage]);
+        setMessages(prev => [...prev, data.createMessage]);
         setMessageText('');
       }
     } catch (error) {
@@ -138,16 +156,14 @@ const ChatPage = ({ username, isAdmin }) => {
 
   const handleChatUserClick = (student) => {
     setCurrentChatUser(student);
+    localStorage.setItem('lastChatUserId', student._id);
   };
 
   const formatTimestamp = (timestamp) => {
     try {
       const numericTimestamp = Number(timestamp);
-  
       if (isNaN(numericTimestamp)) throw new Error("Timestamp is not a number");
-  
       const date = new Date(numericTimestamp);
-  
       return {
         time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         date: date.toLocaleDateString(),
@@ -175,7 +191,7 @@ const ChatPage = ({ username, isAdmin }) => {
       <div className={`student-list p-4 overflow-y-auto ${
         theme === 'dark' ? 'bg-card-dark' : 'bg-card-light'
       }`}>
-        <ul id="students" className="list-none p-0 m-0">
+        <ul className="list-none p-0 m-0">
           {students.length === 0 ? (
             <li className={`text-center py-2 ${
               theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
@@ -205,7 +221,7 @@ const ChatPage = ({ username, isAdmin }) => {
 
       {/* Chat area */}
       <div className={`chat-area max-h-[600px] m-5 col-span-3 p-4 rounded-lg shadow-md flex flex-col ${
-        theme === 'dark' ? 'bg-card-dark' : 'bg-background-light'
+        theme === 'dark' ? 'bg-[#484849]' : 'bg-background-light'
       }`}>
         <h2 className={`text-lg font-bold mb-2 ${
           theme === 'dark' ? 'text-text-dark' : 'text-text-light'
@@ -216,7 +232,7 @@ const ChatPage = ({ username, isAdmin }) => {
         {/* Chat messages */}
         <div
           className={`flex-1 overflow-y-auto rounded-lg p-4 mb-4 flex flex-col gap-2 ${
-            theme === 'dark' ? 'bg-[#484849]' : 'bg-gray-100'
+            theme === 'dark' ? 'bg-card-dark' : 'bg-gray-100'
           }`}
           id="chat-messages"
           ref={chatMessagesRef}
@@ -259,7 +275,6 @@ const ChatPage = ({ username, isAdmin }) => {
         {/* Message input */}
         <div className="message-input flex gap-4 mt-4">
           <input
-            id="message-box"
             type="text"
             placeholder={currentChatUser ? "Type your message" : "Select a user to chat"}
             className={`flex-1 p-2 rounded-md border text-sm ${

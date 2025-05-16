@@ -4,12 +4,9 @@ import ThemeToggle from './themeToggle.jsx';
 const Topbar = ({ username, onSignIn }) => {
   return (
     <div className="col-span-2 h-[5vh] shadow-md w-full flex items-center justify-between px-5 bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark">
-      {/* Theme toggle on far left */}
       <div className="flex items-center">
         <ThemeToggle />
       </div>
-
-      {/* Username and logout button on right */}
       <div className="flex items-center space-x-4">
         {username && (
           <span className="text-base font-bold">

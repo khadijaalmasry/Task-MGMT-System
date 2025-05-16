@@ -1,9 +1,9 @@
-// src/components/ThemeToggle.jsx
 import { useTheme } from '../context/themeContext.jsx';
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
-
+  // sun icon for dark mode
+  // moon icon for light mode
   return (
     <button
       onClick={toggleTheme}
