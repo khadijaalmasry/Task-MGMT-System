@@ -41,7 +41,7 @@ MongoDB Connected
 ```
   
 
-## LogIn as Admin
+## Log In as Admin
   Default password for all users is 'password123' 
   to log in as an Admin, try username 'John Doe' (case sensitive)
   (you can use the [apollo graphql sandbox url](http://localhost:5001/graphql), select the sign in mutation and create a new admin user)
