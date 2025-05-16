@@ -1,3 +1,8 @@
+### Project Description
+The Task Management System is a web-based application that facilitates the organization,
+tracking, and management of tasks and projects. It is designed to enhance productivity
+and collaboration among users, including students and administrators.
+
 ## Environment Variables
 
 To run this project, you'll need to create a `.env` file in the root directory of the backend folder with the following variables:  
