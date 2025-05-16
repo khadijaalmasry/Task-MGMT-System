@@ -16,7 +16,9 @@ You'll need to open 2 terminals
   ```
   cd backend
   npm run dev
-  //The output will look like this:
+```
+  The output will look like this:
+  ```
 Server running on port 5001
 Try these endpoints:
   - REST: http://localhost:5001/health
@@ -28,7 +30,9 @@ MongoDB Connected
   ```
   cd frontend
   npm run dev
-  //The output will look like this:
+```
+  The output will look like this:
+  ```
   VITE v6.3.4  ready in 123 ms
 
   ➜  Local:   http://localhost:5173/
