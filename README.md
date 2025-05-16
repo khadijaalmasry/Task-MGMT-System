@@ -49,5 +49,19 @@ MongoDB Connected
 ## Log In as Admin
   Default password for all users is 'password123' 
   to log in as an Admin, try username 'John Doe' (case sensitive)
-  (you can use the [apollo graphql sandbox url](http://localhost:5001/graphql), select the sign in mutation and create a new admin user)
+  (you can use the [apollo graphql sandbox url](http://localhost:5001/graphql) to create a user with an admin user role, since that cannot be done using the frontend sign up form. Select the sign up mutation from the documentation, or copy-paste this mutation and fill it with your data to create a new admin user:
+  ```
+mutation SignUp {
+  signUp(name: "your_username", password: "your_password", isAdmin: true) {
+    token
+    user {
+      _id
+      name
+      isAdmin
+      universityId
+    }
+  }
+}
+```
+  
   -- make sure the backend terminal is running if you want to use the Apollo sandbox
