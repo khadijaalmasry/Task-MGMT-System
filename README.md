@@ -64,4 +64,4 @@ mutation SignUp {
 }
 ```
   
-  -- make sure the backend terminal is running if you want to use the Apollo sandbox
+  -- make sure the backend terminal is running if you want to use the Apollo sandbox.
