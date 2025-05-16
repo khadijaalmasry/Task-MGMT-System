@@ -16,7 +16,9 @@ JWT_SECRET=c9a75dc9626432cd3eb5d3f2d4a525654d39ed910921fcdc3ec1cab2dae2e405
 After creating the `.env` file, you will need to add the node_modules. 
 Simply open a terminal and print:
 ```npm install```
+
 You'll need to open 2 terminals
+
   Terminal 1: 
   ```
   cd backend
