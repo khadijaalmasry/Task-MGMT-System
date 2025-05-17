@@ -29,13 +29,12 @@ const wsLink = new GraphQLWsLink(
         authorization: token ? `Bearer ${token}` : "",
       };
     },
-    connectionAckWaitTimeout: 10000, // Increase timeout
+    connectionAckWaitTimeout: 10000, 
     shouldRetry: () => true,
     retryAttempts: Infinity,
-    // Add WebSocket-specific options
     webSocketImpl: WebSocket,
     lazy: true, // Only connect when first subscription is created
-    keepAlive: 10000, // Send ping every 10 seconds
+    keepAlive: 10000, // Ping every 10 seconds
   })
 );
 
