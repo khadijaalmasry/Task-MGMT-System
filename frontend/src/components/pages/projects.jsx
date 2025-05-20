@@ -272,7 +272,7 @@ const ProjectsPage = () => {
             <option value="in progress">In Progress</option>
             <option value="completed">Completed</option>
             <option value="pending">Pending</option>
-            <option value="onhold">On Hold</option>
+            <option value="on hold">On Hold</option>
             <option value="cancelled">Cancelled</option>
           </select>
         </div>

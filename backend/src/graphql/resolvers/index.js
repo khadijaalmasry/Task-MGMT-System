@@ -137,7 +137,7 @@ signIn: async (_, { name, password }) => {
 
 updateStudent: async (_, { id, name, password, isAdmin, universityID }, context) => {
   authMiddleware(context);
-  
+  adminMiddleware(context);
   const updateData = { 
     name, 
     isAdmin, 
@@ -165,6 +165,7 @@ updateStudent: async (_, { id, name, password, isAdmin, universityID }, context)
   
     createProject: async (_, { title, description, category, studentIds, startDate, endDate }, context) => {
       authMiddleware(context);
+      adminMiddleware(context);
       const newProject = new Project({
         title,
         description,
@@ -188,6 +189,7 @@ updateStudent: async (_, { id, name, password, isAdmin, universityID }, context)
 
     updateProject: async (_, { id, title, description, category, studentIds, startDate, endDate, status }, context) => {
       authMiddleware(context);
+      adminMiddleware(context);
       const updateData = {
         title,
         description,

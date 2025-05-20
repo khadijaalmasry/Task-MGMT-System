@@ -65,7 +65,7 @@ const typeDefs = gql`
     signIn(name: String!, password: String!): AuthPayload
 
     # Student Mutations
-    updateStudent(id: ID!, name: String, password: String, isAdmin: Boolean, universityID: String): Student @auth
+    updateStudent(id: ID!, name: String, password: String, isAdmin: Boolean, universityID: String): Student @auth @admin
     deleteStudent(id: ID!): Boolean @auth @admin
 
     # Project Mutations
@@ -76,7 +76,7 @@ const typeDefs = gql`
       studentIds: [ID!]
       startDate: String
       endDate: String
-    ): Project @auth
+    ): Project @auth @admin
     updateProject(
       id: ID!
       title: String
@@ -86,7 +86,7 @@ const typeDefs = gql`
       startDate: String
       endDate: String
       status: String
-    ): Project @auth
+    ): Project @auth @admin
     deleteProject(id: ID!): Boolean @auth @admin
 
     # Task Mutations
@@ -111,8 +111,8 @@ const typeDefs = gql`
 
     # Message Mutations
     createMessage(senderId: ID!, recipientId: ID!, text: String!): Message @auth
-    updateMessage(id: ID!, text: String!): Message @auth
-    deleteMessage(id: ID!): Boolean @auth
+    updateMessage(id: ID!, text: String!): Message @auth @admin
+    deleteMessage(id: ID!): Boolean @auth @admin
   }
 
   type Subscription {
