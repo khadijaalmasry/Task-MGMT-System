@@ -3,15 +3,6 @@ The Task Management System is a web-based application that facilitates the organ
 tracking, and management of tasks and projects. It is designed to enhance productivity
 and collaboration among users, including students and administrators.
 
-## Environment Variables
-
-To run this project, you'll need to create a `.env` file in the root directory of the backend folder with the following variables:  
-
-```env
-MONGO_URI=mongodb+srv://khakhkhekh:password123password@mycluster-00.uwcoc8z.mongodb.net/TaskMgmt?retryWrites=true&w=majority&appName=mycluster-00
-PORT=5001
-JWT_SECRET=c9a75dc9626432cd3eb5d3f2d4a525654d39ed910921fcdc3ec1cab2dae2e405
-```
 ## How to run: 
 After creating the `.env` file, you will need to add the node_modules. 
 Simply open a terminal and print:
