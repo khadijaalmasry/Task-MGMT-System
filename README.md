@@ -3,6 +3,7 @@ The Task Management System is a web-based application that facilitates the organ
 tracking, and management of tasks and projects. It is designed to enhance productivity
 and collaboration among users, including students and administrators.
 
+-- This is the main course project for the Advanced Web Programming (10636464) course at NNU. --
 
 ## Environment Variables
 
